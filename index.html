@@ -1,87 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Open iOS App</title>
-<style>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open iOS App</title>
+    <style>
       body {
-
         font-family: Arial, sans-serif;
-
         text-align: center;
-
         margin-top: 100px;
-
       }
-
       a {
-
         display: inline-block;
-
         padding: 15px 30px;
-
         text-decoration: none;
-
         background-color: #007bff;
-
         color: white;
-
         font-size: 18px;
-
         border-radius: 5px;
-
       }
-
       a:hover {
-
         background-color: #0056b3;
-
       }
-</style>
-</head>
-<body>
-<h1>Demo Web Page</h1>
-<p>Click the button below to open the iOS app:</p>
-<a id="open-app-button" href="#">Open Bajaj Finserv Super App</a>
-<script>
-
+    </style>
+  </head>
+  <body>
+    <h1>Demo Web Page</h1>
+    <p>Click the button below to open the iOS app:</p>
+    <a id="open-app-button" href="#">Open Bajaj Finserv Super App</a>
+    <script>
       document.getElementById("open-app-button").onclick = function (e) {
-
         e.preventDefault();
 
-        const appStoreUrl = "https://apps.apple.com/in/app/bajaj-finserv-loans-upi-fd/id505454145"; // Replace with your App Store URL
-
+        const appStoreUrl = "https://apps.apple.com/in/app/bajaj-finserv/id123456789"; // Replace with your App Store URL
         const customSchemeUrl = "com.bajaj://main"; // Replace with your app's custom URL scheme
+        let appOpened = false;
 
-        // Record the start time
+        // Listen for visibility change
+        document.addEventListener("visibilitychange", function () {
+          if (document.visibilityState === "hidden") {
+            appOpened = true; // User switched to the app
+          }
+        });
 
-        const startTime = Date.now();
-
-        // Open the app using a custom scheme
-
+        // Attempt to open the app
         window.location = customSchemeUrl;
 
-        // Set a longer timeout to account for the splash screen delay
-
+        // Fallback to App Store if the app does not open
         setTimeout(function () {
-
-          const endTime = Date.now();
-
-          // If the elapsed time is less than a threshold, redirect to the App Store
-
-          if (endTime - startTime < 10000) {
-
-            // App didn't open (or stuck on splash screen), redirect to App Store
-
+          if (!appOpened) {
+            console.log("App did not open, redirecting to App Store...");
             window.location = appStoreUrl;
-
+          } else {
+            console.log("App opened successfully.");
           }
-
-        }, 6500); // Adjust this delay to match your app's splash screen duration
-
+        }, 5000); // Adjust timeout as needed
       };
-</script>
-</body>
+    </script>
+  </body>
 </html>
